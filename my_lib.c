@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "my_lib.h"
 
+
 /*
 Esta función calcula el nº de bytes de la cadena apuntada por str, sin incluir el carácter nulo de terminación ‘\0’ .
 Devuelve la longitud de la cadena apuntada por str. No devuelve error.
@@ -178,9 +179,8 @@ void *my_stack_pop(struct my_stack *stack)
 {
     if (stack-> first)
     {
-        struct my_stack_node *temp_node = malloc(sizeof(temp_node));
         //Creamos un nodo temporal
-        temp_node= stack->first;
+        struct my_stack_node *temp_node =  stack->first;
 
         //Copiamos los datos que a continuación se eliminarán
         void *datos = temp_node->data;
@@ -202,19 +202,16 @@ Recorre la pila y retorna el número de nodos totales que hay en los elementos 
 */
 int my_stack_len(struct my_stack *stack)
 {
-    int contador = 0;
-    struct my_stack_node *temp_node = malloc(sizeof(temp_node));
-    temp_node = stack->first;
+    int i = 0;
+    struct my_stack_node *temp_node = stack->first;
 
-    //Recorrido hasta el final de la pilay augmentamos el contador
+    //Recorrido hasta el final de la pilay augmentamos el i
     while (temp_node)
     {
         temp_node = temp_node->next;
-        contador++;
+        i++;
     }
-
-    free(temp_node);    //PREGUNNTAAAAAAAAAR!!! Si con esto basta
-    return contador;
+    return i;
 }
 
 /*
@@ -224,22 +221,46 @@ Recorre la pila liberando la memoria que habíamos reservado para cada uno de lo
 Devuelve el número de bytes liberados.  
 */
 int my_stack_purge (struct my_stack *stack){
-    int contador = 0;
-    struct my_stack_node *temp_node = malloc(sizeof(temp_node));
-    temp_node = stack->first;
+    int i = 0;
 
-    //Recorrido hasta el final de la pila y augmentamos el contador
+    struct my_stack_node *temp_node = stack->first;
+
+    int datos = 0;
+
+    //Recorrido hasta el final de la pila y augmentamos el i
     while (temp_node)
     {
-        temp_node = temp_node->next;
-        contador++;
+        struct my_stack_node *node_next  = temp_node -> next;
+        datos += sizeof(temp_node -> data);
+        //liberamos el nodo temporal y los datos
+        //free(temp_node -> data);
+        free(temp_node); 
+
+        temp_node = node_next;
+        i++;
     }
+    free(stack -> first);
 
-    contador *= sizeof(temp_node);
-    contador *= sizeof(stack -> size);
-    contador += sizeof(stack);
+    int contenido = 0;
+    contenido  = i * sizeof(*temp_node);
+    contenido  += datos;
+    contenido  += sizeof(*stack);
+    
+    return contenido;
+}
 
-    free(temp_node);    //PREGUNNTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!! como liberar todo.
+/*
+Almacena los datos de la pila en el fichero indicado por filename
+*/
+int my_stack_write (struct my_stack *stack, char *filename) 
+{
 
-    return contador;
+}
+
+/*
+Lee los datos de la pila almacenados en el fichero
+*/
+struct my_stack *my_stack_read (char *filename) 
+{
+
 }
