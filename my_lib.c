@@ -202,19 +202,19 @@ Recorre la pila y retorna el número de nodos totales que hay en los elementos 
 */
 int my_stack_len(struct my_stack *stack)
 {
-    int contador = 0;
+    int i = 0;
     struct my_stack_node *temp_node = malloc(sizeof(temp_node));
     temp_node = stack->first;
 
-    //Recorrido hasta el final de la pilay augmentamos el contador
+    //Recorrido hasta el final de la pilay augmentamos el i
     while (temp_node)
     {
         temp_node = temp_node->next;
-        contador++;
+        i++;
     }
 
-    free(temp_node);    //PREGUNNTAAAAAAAAAR!!! Si con esto basta
-    return contador;
+    free(temp_node);    //PREGUNNTAAAAAAAAAR!!! Si hay que liberar memoria
+    return i;
 }
 
 /*
@@ -224,22 +224,26 @@ Recorre la pila liberando la memoria que habíamos reservado para cada uno de lo
 Devuelve el número de bytes liberados.  
 */
 int my_stack_purge (struct my_stack *stack){
-    int contador = 0;
+    int i = 0;
+
     struct my_stack_node *temp_node = malloc(sizeof(temp_node));
+    struct my_stack_node *node_next = malloc(sizeof(node_next));
+
     temp_node = stack->first;
 
-    //Recorrido hasta el final de la pila y augmentamos el contador
+    //Recorrido hasta el final de la pila y augmentamos el i
     while (temp_node)
     {
-        temp_node = temp_node->next;
-        contador++;
+        node_next = temp_node -> next;
+        //liberamos el nodo temporal
+        free(temp_node); 
+        temp_node = node_next;
+        i++;
     }
 
-    contador *= sizeof(temp_node);
-    contador *= sizeof(stack -> size);
-    contador += sizeof(stack);
+    i *= sizeof(temp_node);
+    i *= sizeof(stack -> size);
+    i += sizeof(stack);
 
-    free(temp_node);    //PREGUNNTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!! como liberar todo.
-
-    return contador;
+    return i;
 }
