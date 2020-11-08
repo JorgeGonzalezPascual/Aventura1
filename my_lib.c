@@ -1,3 +1,5 @@
+//Luis Barca Pons, Joan Martorell Ferriol, Jorge González Pascual
+
 #include <stdio.h>
 #include "my_lib.h"
 
