@@ -333,7 +333,7 @@ struct my_stack *my_stack_read(char *filename)
     // Cogemos el tamaño del data del fichero
     read(fichero, &size, sizeof(int));
 
-    // Inicializamos el stack (usando init) y también el data
+    // Inicializamos el stack (usando init) y reservamos tamaño para el data
     stack = my_stack_init(size);
     data = malloc(size);
     if (data == NULL)
@@ -360,5 +360,6 @@ struct my_stack *my_stack_read(char *filename)
         fprintf(stderr, "Error al cerrar el fichero\n");
     }
 
+    free(data);
     return stack;
 }
